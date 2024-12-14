@@ -19,16 +19,20 @@ def readJson():
         print(f"Ошибка: файл не найден - {ex}")
 
 def newTask(data_dict, task, time_date):
-    if re.fullmatch("\d\d/\d\d/\d{4} \d\d:\d\d", time_date):
-        date = time.strptime(time_date, "%d/%m/%Y %H:%M")
-        tme = time.strptime(time_date, "%d/%m/%Y %H:%M")
-    else:
-        date = time.localtime()
-        tme = time.strptime(time_date, "%H:%M")
+    try:
+        if re.fullmatch("\d\d/\d\d/\d{4} \d\d:\d\d", time_date):
+            date = time.strptime(time_date, "%d/%m/%Y %H:%M")
+            tme = time.strptime(time_date, "%d/%m/%Y %H:%M")
+        else:
+            date = time.localtime()
+            tme = time.strptime(time_date, "%H:%M")
 
-    if time.strftime("%d/%m/%Y", date) not in data_dict:
-        data_dict[time.strftime("%d/%m/%Y", date)] = dict()
-    data_dict[time.strftime("%d/%m/%Y", date)][time.strftime("%H:%M", tme)] = task
+        if time.strftime("%d/%m/%Y", date) not in data_dict:
+            data_dict[time.strftime("%d/%m/%Y", date)] = dict()
+        data_dict[time.strftime("%d/%m/%Y", date)][time.strftime("%H:%M", tme)] = task
+
+    except Exception as ex:
+        print(f"Ошибка:  {ex}")
 
     print("задачa записанa :)")
     writJson(data_dict)
